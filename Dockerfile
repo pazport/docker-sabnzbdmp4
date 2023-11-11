@@ -27,7 +27,8 @@ RUN \
   apk add  -U --update --no-cache \
     7zip \
     libgomp \
-    python3 && \
+    python3 \
+    ffmpeg && \
   echo "**** install sabnzbd ****" && \
   if [ -z ${SABNZBD_VERSION+x} ]; then \
     SABNZBD_VERSION=$(curl -s https://api.github.com/repos/sabnzbd/sabnzbd/releases/latest \

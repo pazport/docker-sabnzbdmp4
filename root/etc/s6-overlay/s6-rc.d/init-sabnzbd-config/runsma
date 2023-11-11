@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Check if /root/config/sma directory exists
+if [ ! -d "/config/sma" ]; then
+    # Clone the repository if it doesn't exist
+    git clone https://github.com/pazport/sickbeard_mp4_automator.git /config/sma
+else
+    # Pull updates if the repository exists
+    git -C /config/sma pull
+fi
+
+# Install dependencies
+pip3 install -r /config/sma/setup/requirements.txt
+
+# Copy autoProcess.ini.sample to autoProcess.ini
+if [ ! -f "/config/sma/autoProcess.ini" ]; then
+    cp -r "/config/sma/setup/autoProcess.ini.sample" "/config/sma/autoProcess.ini"
+else
+    echo "File '/config/sma/autoProcess.ini' already exists. Skipping copy."
+fi
+
+# Set permissions
+chmod -R 775 /config/sma
+chown -R abc:abc /config/sma
