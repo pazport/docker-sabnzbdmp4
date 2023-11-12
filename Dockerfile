@@ -28,7 +28,8 @@ RUN \
     7zip \
     libgomp \
     python3 \
-    ffmpeg && \
+    ffmpeg \
+    git && \
   echo "**** install sabnzbd ****" && \
   if [ -z ${SABNZBD_VERSION+x} ]; then \
     SABNZBD_VERSION=$(curl -s https://api.github.com/repos/sabnzbd/sabnzbd/releases/latest \
@@ -85,6 +86,10 @@ RUN \
   rm -rf \
     /tmp/* \
     $HOME/.cache
+
+RUN \
+git clone https://github.com/pazport/sickbeard_mp4_automator.git /sma && \
+pip3 install -q -r /sma/setup/requirements.txt
 
 # add local files
 COPY root/ /

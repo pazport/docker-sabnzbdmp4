@@ -7,32 +7,27 @@ Find us at:
 
 # [linuxserver/sabnzbd](https://github.com/pazport/docker-sabnzbdmp4)
 
-[![Scarf.io pulls](https://scarf.sh/installs-badge/linuxserver-ci/linuxserver%2Fsabnzbd?color=94398d&label-color=555555&logo-color=ffffff&style=for-the-badge&package-type=docker)](https://scarf.sh/gateway/linuxserver-ci/docker/linuxserver%2Fsabnzbd)
-[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-sabnzbd.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/linuxserver/docker-sabnzbd)
 [![GitHub Release](https://img.shields.io/github/release/linuxserver/docker-sabnzbd.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/pazport/docker-sabnzbdmp4/releases)
 [![GitHub Package Repository](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitHub%20Package&logo=github)](https://github.com/pazport/docker-sabnzbdmp4/packages)
-[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/sabnzbd.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/linuxserver/sabnzbd)
-[![Docker Stars](https://img.shields.io/docker/stars/linuxserver/sabnzbd.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=stars&logo=docker)](https://hub.docker.com/r/linuxserver/sabnzbd)
+[![Docker Pulls](https://img.shields.io/docker/pulls/man1234/sabnzbdmp4.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/man1234/sabnzbdmp4)
+[![Docker Stars](https://img.shields.io/docker/stars/man1234/sabnzbdmp4.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=stars&logo=docker)](https://hub.docker.com/r/man1234/sabnzbdmp4)
 [![Jenkins Build](https://img.shields.io/jenkins/build?labelColor=555555&logoColor=ffffff&style=for-the-badge&jobUrl=https%3A%2F%2Fci.linuxserver.io%2Fjob%2FDocker-Pipeline-Builders%2Fjob%2Fdocker-sabnzbd%2Fjob%2Fmaster%2F&logo=jenkins)](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-sabnzbd/job/master/)
 
 THIS IS A FORK OF THE ORIGINAL SABNZBD. JUST WITH SMA INSTALLED.
 
-[Sabnzbd](http://sabnzbd.org/) makes Usenet as simple and streamlined as possible by automating everything we can. All you have to do is add an .nzb. SABnzbd takes over from there, where it will be automatically downloaded, verified, repaired, extracted and filed away with zero human interaction.
 
-[![sabnzbd](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sabnzbd-banner.png)](http://sabnzbd.org/)
 
 ## Supported Architectures
 
-We utilise the docker manifest for multi-platform awareness. More information is available from docker [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list) and our announcement [here](https://blog.linuxserver.io/2019/02/21/the-lsio-pipeline-project/).
 
-Simply pulling `lscr.io/linuxserver/sabnzbd:latest` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+Simply pulling `man1234/sabnzbdmp4:latest` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
 
 The architectures supported by this image are:
 
 | Architecture | Available | Tag |
 | :----: | :----: | ---- |
 | x86-64 | ✅ | amd64-\<version tag\> |
-| arm64 | ✅ | arm64v8-\<version tag\> |
+| arm64 | ❌ | working on this. arm64v8-\<version tag\> |
 | armhf | ❌ | |
 
 ## Version Tags
@@ -42,8 +37,7 @@ This image provides various versions that are available via tags. Please read th
 | Tag | Available | Description |
 | :----: | :----: |--- |
 | latest | ✅ | Stable SABnzbd releases |
-| unstable | ✅ | Pre-releases from the develop branch |
-| nightly | ✅ | Latest commits from the develop branch |
+| test | ✅ | Pre-releases |
 
 ## Application Setup
 
@@ -69,6 +63,11 @@ The folks over at servarr.com wrote a good [write-up](https://wiki.servarr.com/d
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
+###### BEFORE BUILDING CONTAINER.
+1. grab this file>>>>> https://github.com/mdhiggins/sickbeard_mp4_automator/blob/master/setup/autoProcess.ini.sample <<<<< 
+2. call it autoProcess.ini
+3. edit the file. and make your own edits to the file. and remember where the file is.
+
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 
 ```yaml
@@ -76,7 +75,7 @@ To help you get started creating a container from this image you can either use 
 version: "2.1"
 services:
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:latest
+    image: man1234/sabnzbdmp4:latest
     container_name: sabnzbd
     environment:
       - PUID=1000
@@ -84,6 +83,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /path/to/data:/config
+      - /path/to/your/autoProcess.ini:/sma/config/autoProcess.ini ##<<<< this is needed.
       - /path/to/downloads:/downloads #optional
       - /path/to/incomplete/downloads:/incomplete-downloads #optional
     ports:
@@ -104,7 +104,7 @@ docker run -d \
   -v /path/to/downloads:/downloads `#optional` \
   -v /path/to/incomplete/downloads:/incomplete-downloads `#optional` \
   --restart unless-stopped \
-  lscr.io/linuxserver/sabnzbd:latest
+  man1234/sabnzbdmp4:latest
 ```
 
 ## Parameters
@@ -156,12 +156,6 @@ Example output:
 uid=1000(your_user) gid=1000(your_user) groups=1000(your_user)
 ```
 
-## Docker Mods
-
-[![Docker Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=sabnzbd&query=%24.mods%5B%27sabnzbd%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=sabnzbd "view available mods for this container.") [![Docker Universal Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=universal&query=%24.mods%5B%27universal%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=universal "view available universal mods.")
-
-We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to enable additional functionality within the containers. The list of Mods available for this image (if any) as well as universal mods that can be applied to any one of our images can be accessed via the dynamic badges above.
-
 ## Support Info
 
 * Shell access whilst the container is running:
@@ -185,7 +179,7 @@ We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to 
 * Image version number:
 
     ```bash
-    docker inspect -f '{{ index .Config.Labels "build_version" }}' lscr.io/linuxserver/sabnzbd:latest
+    docker inspect -f '{{ index .Config.Labels "build_version" }}' man1234/sabnzbdmp4:latest
     ```
 
 ## Updating Info
@@ -233,7 +227,7 @@ Below are the instructions for updating containers:
 * Update the image:
 
     ```bash
-    docker pull lscr.io/linuxserver/sabnzbd:latest
+    docker pull man1234/sabnzbdmp4:latest
     ```
 
 * Stop the running container:
@@ -297,6 +291,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **12.10.23:** - added sma to sabnzbd
 * **13.09.23:** - Use par2cmdline-turbo in place of par2cmdline.
 * **16.08.23:** - Install unrar from [linuxserver repo](https://github.com/linuxserver/docker-unrar).
 * **10.08.23:** - Bump unrar to 6.2.10.
